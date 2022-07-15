@@ -92,7 +92,7 @@ module.exports = (env, argv) => {
     config.output.filename = '[name].[chunkhash].bundle.js';
     config.output.chunkFilename = '[name].[chunkhash].bundle.js';
     config.optimization = {
-      moduleIds: 'hashed',
+      moduleIds: 'deterministic',
       runtimeChunk: {
         name: 'manifest',
       },
