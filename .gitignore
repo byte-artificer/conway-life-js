@@ -105,3 +105,6 @@ dist
 
 # vscode user settings
 .vscode/
+
+build
+.DS_Store
