@@ -6,11 +6,16 @@ import RouteWithSubRoutes from './RouteWithSubRoutes';
 const Home = lazy(() => import('pages/home/Home'));
 const About = lazy(() => import('pages/about/About'));
 const Contact = lazy(() => import('pages/contact/Contact'));
+const Game = lazy(() => import('pages/game/Game'));
 
 const routes = [
   {
     path: '/',
     component: Home,
+  },
+  {
+    path: '/game',
+    component: Game,
   },
   {
     path: '/about',
