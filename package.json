@@ -7,7 +7,8 @@
     "start": "webpack-dev-server --port 8080 --open --mode=development",
     "clean-build": "shx rm -rf build",
     "build": "npm run clean-build && webpack --mode=production",
-    "build-serve": "npm run build && serve"
+    "build-serve": "npm run build && serve",
+    "console": "node ./src/lifegame/console.js"
   },
   "node_engine": {
     "node": ">=10.16.0"
@@ -88,6 +89,7 @@
     "@hot-loader/react-dom": "^16.13.0",
     "antd": "^4.4.2",
     "beautify-json": "^1.0.1",
+    "prompt-sync": "^4.2.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
