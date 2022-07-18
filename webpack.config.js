@@ -83,6 +83,7 @@ module.exports = (env, argv) => {
       hot: true,
       static: './build',
       historyApiFallback: true, //For react router
+      allowedHosts: "all"
     };
   }
 
