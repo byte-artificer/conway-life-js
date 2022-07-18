@@ -2,6 +2,7 @@ const prompt = require("prompt-sync")();
 require('node:buffer');
 const fs = require('fs');
 const World = require('./world');
+const render = require('./renderers/console');
 const path = require('path');
 
 let world = new World();
@@ -29,13 +30,16 @@ while(run)
     console.log(data);
     world = World.deserialize(data);
     let tick = true;
+    render(world);
     while(tick) {
-        world.renderToConsole();
         console.log('---------------------------------------------------------------------------');
         const res = prompt("next? ");
         if(res === 'n') { run = false; tick = false; }
         if(res === 's') { console.log(world.serialize()); }
         if(res === 'r') { tick = false; }
-        else { world.tick(); }
+        else { 
+            world.tick(); 
+            render(world); 
+        }
     }
 }

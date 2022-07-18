@@ -1,13 +1,13 @@
+var Buffer = require('buffer/').Buffer
 
 class World {
+    worldAge = 0;
     worldWidth = 5;
     worldHeight = 2;
     originIndex = 0;
     grid = new Array(1).fill(new Array(64).fill(0));
     newGrid = new Array(0);
     emptyChunk = new Array(64).fill(0);
-
-    liveChunks = new Array();
 
     constructor() {
         //serialization test
@@ -133,10 +133,17 @@ class World {
                 this.tickChunk(i);
             }
         }
-        this.liveChunks = newLiveChunks;
+        
+        this.worldAge++;
 
         this.grid = this.newGrid;
         this.newGrid = new Array(0);
+    }
+
+    immutableTick() {
+        const newWorld = Object.assign(new World(), this);
+        newWorld.tick();
+        return newWorld;
     }
 
     tickChunk(chunkIndex) {
@@ -214,34 +221,7 @@ class World {
         return this.getChunkIndex(chunkX, chunkZ);
     }
 
-    renderToConsole() {
-        console.log('   01234567890123456789012345678901');
-        for(let chunkZ = 0; chunkZ < this.worldHeight; chunkZ++) {
-            for(let localZ = 0; localZ < 8; localZ++)
-            {
-                let line = (''+(chunkZ*8+localZ)+' ').padStart(3, ' ');
-                for(let chunkX = 0; chunkX < this.worldWidth; chunkX++) {
-                    const index = this.getChunkIndex(chunkX, chunkZ);
-                    const chunk = this.grid[index] ?? this.emptyChunk;
-                    if(chunk === undefined) {
-                        console.log('grid length '+ this.grid.length + ' world width: ' + this.worldWidth + ' index:' + index + '\r\n' + this.grid);
-                    }
-                    for(let localX = 0; localX < 8; localX++) {
-                        const localIndex = this.getLocalIndex(localX, localZ);
-                        const value = chunk[localIndex];
-                        if(value === 1) {
-                            line = line.concat('█');
-                        }
-                        else {
-                            line = line.concat('.');
-                        }
-                    }
-                }
-                console.log(line);
-            }
-        }
-    }
-
+    
     getNeighborIdicies(index, width) {
         const coords = this.getCoord(index, width);
         const neighborIndices = this.getNeighborCoords(coords.x, coords.z, width)
@@ -307,6 +287,10 @@ class World {
 
     static deserialize(jsonString) {
         const ser = JSON.parse(jsonString);
+        return this.fromJsonObject(ser);
+    }
+
+    static fromJsonObject(ser) {
         const world = new World();
         world.worldWidth = ser.width;
         world.worldHeight = ser.height;
